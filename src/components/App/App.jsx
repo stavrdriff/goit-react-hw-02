@@ -14,16 +14,14 @@ const App = () => {
 
     useEffect(() => {
         window.localStorage.setItem("stats", JSON.stringify(stats));
-    });
+    }, [stats]);
 
     const updateFeedback = (feedbackType = '') => {
         for(let key in stats) {
             if (key === feedbackType.target.textContent.toLowerCase()) {
-                const result = stats[key] += 1;
-
                 setStats({
                     ...stats,
-                    key: result,
+                    [key]: stats[key] += 1,
                 })
             }
         }
@@ -38,12 +36,16 @@ const App = () => {
     }
 
     const totalFeedback = stats.good + stats.neutral + stats.bad;
+    const positiveFeedback = Math.round((stats.good / totalFeedback) * 100);
 
     return (
         <>
             <Description />
-            <Options onUpgrade={updateFeedback}  total={totalFeedback} />
-            { totalFeedback ? <Feedback stats={stats} total={totalFeedback} /> : <Notification /> }
+            <Options onUpgrade={updateFeedback}  total={totalFeedback}/>
+            { totalFeedback
+                ? <Feedback stats={stats} total={totalFeedback} positive={positiveFeedback} />
+                : <Notification />
+            }
         </>
     )
 }
