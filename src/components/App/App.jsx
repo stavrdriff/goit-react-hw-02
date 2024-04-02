@@ -18,32 +18,42 @@ const App = () => {
 
     const updateFeedback = (feedbackType = '') => {
         for(let key in stats) {
-            if (key === feedbackType.target.textContent.toLowerCase()) {
+            if (key === feedbackType.toLowerCase()) {
                 setStats({
                     ...stats,
                     [key]: stats[key] += 1,
                 })
             }
         }
+    }
 
-        if (feedbackType.target.textContent.toLowerCase() === 'reset') {
-            setStats({
-                good: 0,
-                neutral: 0,
-                bad: 0,
-            })
-        }
+    const resetFeedback = () => {
+        setStats({
+            good: 0,
+            neutral: 0,
+            bad: 0,
+        })
     }
 
     const totalFeedback = stats.good + stats.neutral + stats.bad;
-    const positiveFeedback = Math.round((stats.good / totalFeedback) * 100);
+    const positiveFeedback =
+        totalFeedback && totalFeedback > 0
+        && Math.round((stats.good / totalFeedback) * 100);
 
     return (
         <>
             <Description />
-            <Options onUpgrade={updateFeedback}  total={totalFeedback}/>
+            <Options
+                onUpgrade={updateFeedback}
+                total={totalFeedback}
+                onReset={resetFeedback}
+            />
             { totalFeedback
-                ? <Feedback stats={stats} total={totalFeedback} positive={positiveFeedback} />
+                ? <Feedback
+                    stats={stats}
+                    total={totalFeedback}
+                    positive={positiveFeedback}
+                />
                 : <Notification />
             }
         </>
