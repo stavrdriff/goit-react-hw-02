@@ -21,7 +21,7 @@ const App = () => {
             if (key === feedbackType.toLowerCase()) {
                 setStats({
                     ...stats,
-                    [key]: stats[key] += 1,
+                    [key]: stats[key] + 1,
                 })
             }
         }
@@ -37,8 +37,9 @@ const App = () => {
 
     const totalFeedback = stats.good + stats.neutral + stats.bad;
     const positiveFeedback =
-        totalFeedback && totalFeedback > 0
-        && Math.round((stats.good / totalFeedback) * 100);
+        totalFeedback > 0
+            ? Math.round((stats.good / totalFeedback) * 100)
+            : 0;
 
     return (
         <>
