@@ -19,11 +19,9 @@ const App = () => {
     const updateFeedback = (feedbackType = '') => {
         for(let key in stats) {
             if (key === feedbackType.toLowerCase()) {
-                const result = stats[key];
-
                 setStats({
                     ...stats,
-                    [key]: result + 1,
+                    [key]: stats[key] + 1,
                 })
             }
         }
